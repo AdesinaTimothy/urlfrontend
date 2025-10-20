@@ -1,6 +1,5 @@
 "use client";
 import Modal from "@/components/Modal";
-import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { toast } from "react-toastify";
 
@@ -8,6 +7,7 @@ import "react-toastify/dist/ReactToastify.css";
 
 export default function Home() {
   const [url, setUrl] = useState<string>("");
+  const [code, setCodes] = useState<string>("");
   const [shortCode, setShortCode] = useState<string>("");
   const [shortenedUrl, setShortenedUrl] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
@@ -22,10 +22,7 @@ export default function Home() {
     });
   };
 
-  const router = useRouter();
-  useEffect(() => {
-    router.replace("/signup");
-  }, []);
+  const token = localStorage.getItem("token");
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -34,16 +31,20 @@ export default function Home() {
     setShowModal(false);
 
     try {
-      const res = await fetch(
-        "https://qrcode-backend-production-3ce3.up.railway.app/generate-qr",
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({ url, shortCode }),
-        }
-      );
+      const res = await fetch("http://localhost:8000/shorten", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify({ url, code }),
+        credentials: "include",
+      });
+
+      if (!url.trim()) {
+        setError("Please enter a URL");
+        toast.error("Please enter a URL");
+      }
 
       if (!res.ok) {
         const errorData = await res.json();
@@ -52,7 +53,8 @@ export default function Home() {
 
       const data = await res.json();
 
-      setShortenedUrl(data.url);
+      setShortenedUrl(data.targetURL);
+      setShortCode(data.shortCode);
       setShowModal(true);
       toast.success("Url Shortened Succesfully");
     } catch (err: unknown) {
@@ -134,9 +136,9 @@ export default function Home() {
               </label>
               <input
                 type="text"
-                value={shortCode}
+                value={code}
                 placeholder="Enter Short Code"
-                onChange={(e) => setShortCode(e.target.value)}
+                onChange={(e) => setCodes(e.target.value)}
                 className="
             w-full
             px-4
@@ -179,12 +181,14 @@ export default function Home() {
               Shorten
             </button>
           </form>
-          {shortenedUrl && showModal && (
-            <Modal
-              shortenedUrl={shortenedUrl}
-              onClose={() => setShowModal(false)}
-            />
+          {shortCode && showModal && (
+            <Modal shortCode={shortCode} onClose={() => setShowModal(false)} />
           )}
+        </div>
+
+        <h2>Prevous Shortend URL</h2>
+        <div>
+          <ul></ul>
         </div>
       </section>
 
