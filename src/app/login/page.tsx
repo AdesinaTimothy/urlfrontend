@@ -11,39 +11,6 @@ export default function Login() {
 
   const router = useRouter();
 
-  // const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-  //   e.preventDefault();
-  //   setLoading(true);
-
-  //   try {
-  //     // const res = await fetch("http://localhost:8000/user/login",
-  //     const res = await fetch(
-  //       "https://urlbackend-production.up.railway.app/user/login",
-  //       {
-  //         method: "POST",
-  //         headers: { "Content-Type": "application/json" },
-  //         body: JSON.stringify({ email, password }),
-  //       },
-  //     );
-
-  //     const data = await res.json();
-
-  //     if (!res.ok) throw new Error(data.error || "Login failed");
-  //     const token = data.token;
-
-  //     //Store the token in Localstorage
-
-  //     localStorage.setItem("token", token);
-
-  //     toast.success("Logged in successfully!");
-  //     router.push("/dashboard");
-  //   } catch (err: unknown) {
-  //     if (err instanceof Error) toast.error(err.message);
-  //   } finally {
-  //     setLoading(false);
-  //   }
-  // };
-
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setLoading(true);
@@ -63,7 +30,6 @@ export default function Login() {
 
       if (!res.ok) throw new Error(data.error || "Login failed");
 
-      // Only store token after successful response
       if (data.token) {
         localStorage.setItem("token", data.token);
         toast.success("Logged in successfully!");
