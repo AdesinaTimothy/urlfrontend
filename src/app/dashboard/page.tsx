@@ -1,3 +1,85 @@
+// "use client";
+// import Modal from "@/components/Modal";
+// import { useEffect, useState } from "react";
+// import { toast } from "react-toastify";
+
+// import "react-toastify/dist/ReactToastify.css";
+
+// export default function Home() {
+//   const [url, setUrl] = useState<string>("");
+//   const [code, setCodes] = useState<string>("");
+//   const [shortCode, setShortCode] = useState<string>("");
+//   const [shortenedUrl, setShortenedUrl] = useState<string | null>(null);
+//   const [error, setError] = useState<string | null>(null);
+//   const [showModal, setShowModal] = useState(false);
+
+//    useEffect(() => {
+//     const storedToken = localStorage.getItem("token");
+//     setToken(storedToken);
+//   }, []);
+
+//   const notify = () => {
+//     toast.success("Barcode Downloaded Successfully", {
+//       style: {
+//         fontSize: window.innerWidth < 640 ? "12px" : "16px",
+//         padding: window.innerWidth < 640 ? "8px 12px" : "12px 16px",
+//       },
+//     });
+//   };
+
+//   const token = localStorage.getItem("token");
+
+//   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+//     e.preventDefault();
+//     setError(null);
+//     setShortenedUrl(null);
+//     setShowModal(false);
+
+//     try {
+//       const res = await fetch(
+//         "https://urlbackend-production.up.railway.app/shorten",
+//         {
+//           method: "POST",
+//           headers: {
+//             "Content-Type": "application/json",
+//             Authorization: `Bearer ${token}`,
+//           },
+//           body: JSON.stringify({ url, code }),
+//           credentials: "include",
+//         },
+//       );
+
+//       if (!url.trim()) {
+//         setError("Please enter a URL");
+//         toast.error("Please enter a URL");
+//       }
+
+//       if (!res.ok) {
+//         const errorData = await res.json();
+//         throw new Error(errorData.error || "Something went wrong");
+//       }
+
+//       const data = await res.json();
+
+//       setShortenedUrl(data.targetURL);
+//       setShortCode(data.shortCode);
+//       setShowModal(true);
+//       toast.success("Url Shortened Succesfully");
+//     } catch (err: unknown) {
+//       if (err instanceof Error) {
+//         setError(err.message);
+//         toast.error(err.message);
+//       } else {
+//         setError("Something went wrong");
+//         toast.error("something went wrong");
+//       }
+//     }
+//   };
+
+//   return (
+
+// }
+
 "use client";
 import Modal from "@/components/Modal";
 import { useEffect, useState } from "react";
@@ -12,6 +94,12 @@ export default function Home() {
   const [shortenedUrl, setShortenedUrl] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [showModal, setShowModal] = useState(false);
+  const [token, setToken] = useState<string | null>(null);
+
+  useEffect(() => {
+    const storedToken = localStorage.getItem("token");
+    setToken(storedToken);
+  }, []);
 
   const notify = () => {
     toast.success("Barcode Downloaded Successfully", {
@@ -22,8 +110,6 @@ export default function Home() {
     });
   };
 
-  const token = localStorage.getItem("token");
-
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setError(null);
@@ -32,7 +118,6 @@ export default function Home() {
 
     try {
       const res = await fetch(
-        // "http://localhost:8000/shorten",
         "https://urlbackend-production.up.railway.app/shorten",
         {
           method: "POST",
