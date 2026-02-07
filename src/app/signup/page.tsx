@@ -18,16 +18,20 @@ export default function SignUp() {
     setLoading(true);
 
     try {
-      const res = await fetch("http://localhost:8000/user/signup", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          firstname: firstName,
-          lastname: lastName,
-          email,
-          password,
-        }),
-      });
+      const res = await fetch(
+        // "http://localhost:8000/user/signup",
+        "https://urlbackend-production.up.railway.app/user/signup",
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            firstname: firstName,
+            lastname: lastName,
+            email,
+            password,
+          }),
+        },
+      );
 
       const data = await res.json();
       if (!res.ok) throw new Error(data.error || "Signup failed");

@@ -31,15 +31,19 @@ export default function Home() {
     setShowModal(false);
 
     try {
-      const res = await fetch("http://localhost:8000/shorten", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
+      const res = await fetch(
+        // "http://localhost:8000/shorten",
+        "https://urlbackend-production.up.railway.app/shorten",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+          body: JSON.stringify({ url, code }),
+          credentials: "include",
         },
-        body: JSON.stringify({ url, code }),
-        credentials: "include",
-      });
+      );
 
       if (!url.trim()) {
         setError("Please enter a URL");

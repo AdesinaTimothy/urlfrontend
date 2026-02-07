@@ -35,7 +35,7 @@ export default function Home() {
 
     try {
       const res = await fetch(
-        "https://qrcode-backend-production-3ce3.up.railway.app/generate-qr",
+        "https://urlbackend-production.up.railway.app/generate-qr",
         {
           method: "POST",
           headers: {
