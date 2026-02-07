@@ -21,7 +21,7 @@ const Modal: React.FC<ModalProps> = ({ shortCode, onClose }) => {
   const copyToClipboard = async () => {
     if (!shortCode) return;
 
-    const fullUrl = `http://localhost:8000/${shortCode}`;
+    const fullUrl = `http://localhost:8000/${shortCode.toLocaleLowerCase()}`;
 
     try {
       await navigator.clipboard.writeText(fullUrl);

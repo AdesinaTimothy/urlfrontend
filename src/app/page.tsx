@@ -42,7 +42,7 @@ export default function Home() {
             "Content-Type": "application/json",
           },
           body: JSON.stringify({ url, shortCode }),
-        }
+        },
       );
 
       if (!res.ok) {
@@ -181,7 +181,7 @@ export default function Home() {
           </form>
           {shortenedUrl && showModal && (
             <Modal
-              shortenedUrl={shortenedUrl}
+              shortCode={shortenedUrl}
               onClose={() => setShowModal(false)}
             />
           )}

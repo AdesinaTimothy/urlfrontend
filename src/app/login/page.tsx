@@ -33,9 +33,6 @@ export default function Login() {
 
       toast.success("Logged in successfully!");
       router.push("/dashboard");
-
-      // Save token if backend returns one
-      // localStorage.setItem("token", data.token);
     } catch (err: unknown) {
       if (err instanceof Error) toast.error(err.message);
     } finally {
