@@ -28,21 +28,17 @@ export default function Login() {
 
       const data = await res.json();
 
+      // Check if response is OK FIRST
       if (!res.ok) throw new Error(data.error || "Login failed");
 
+      // Only store token if login was successful
       if (data.token) {
         localStorage.setItem("token", data.token);
         toast.success("Logged in successfully!");
         router.push("/dashboard");
-      } else {
-        throw new Error("No token received");
       }
     } catch (err: unknown) {
-      if (err instanceof Error) {
-        toast.error(err.message);
-      } else {
-        toast.error("Failed to connect to server");
-      }
+      if (err instanceof Error) toast.error(err.message);
     } finally {
       setLoading(false);
     }
